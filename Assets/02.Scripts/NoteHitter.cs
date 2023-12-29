@@ -45,7 +45,7 @@ public class NoteHitter : MonoBehaviour
 
     private void Hit()
     {
-        HitRange hitJudge = HitRange.Bad;
+        HitRange hitJudge = HitRange.None;
 
         Collider2D[] colnotes = Physics2D.OverlapBoxAll(point: transform.position,
                                                         size: new Vector2(transform.lossyScale.x / 2.0f,
@@ -59,16 +59,29 @@ public class NoteHitter : MonoBehaviour
 
             float distance = Mathf.Abs(colnotesFiltered.First().transform.position.y - transform.position.y);
 
-            if(distance < PlaySettings.HIT_JUDGE_RANGE_PERFECT)
+            if(distance < PlaySettings.HIT_JUDGE_RANGE_PERFECT / 2.0f)
+            {
                 hitJudge = HitRange.Perfect;
-            else if(distance < PlaySettings.HIT_JUDGE_RANGE_GREAT)
+                GameStatus.IncreasePerfectCount();
+            }
+            else if(distance < PlaySettings.HIT_JUDGE_RANGE_GREAT / 2.0f)
+            {
                 hitJudge = HitRange.Great;
-            else if(distance < PlaySettings.HIT_JUDGE_RANGE_GOOD)
+                GameStatus.IncreaseGreatCount();
+            }
+            else if(distance < PlaySettings.HIT_JUDGE_RANGE_GOOD / 2.0f)
+            {
                 hitJudge = HitRange.Good;
-            else if(distance < PlaySettings.HIT_JUDGE_RANGE_MISS)
+                GameStatus.IncreaseGoodCount();
+            }
+            else if(distance < PlaySettings.HIT_JUDGE_RANGE_MISS / 2.0f)
+            {
                 hitJudge = HitRange.Miss;
+                GameStatus.IncreaseMissCount();
+            }
 
             Destroy(colnotesFiltered.First().gameObject);
+            
             HitAlertManager.instance.PopUp(hitJudge);
         }
     }

@@ -42,6 +42,12 @@ public class PopUpText : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    public void PopUp(string text)
+    {
+        _text.text = text;
+        PopUp();
+    }
+
     public void ResetPosition()
     {
         transform.position = _startPosition;

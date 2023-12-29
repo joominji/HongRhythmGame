@@ -10,6 +10,7 @@ public class HitAlertManager : MonoBehaviour
     [SerializeField] private PopUpText _good;
     [SerializeField] private PopUpText _great;
     [SerializeField] private PopUpText _perfect;
+    [SerializeField] private PopUpText _combo;
 
     private void Awake()
     {
@@ -65,6 +66,11 @@ public class HitAlertManager : MonoBehaviour
                 break;
             default:
                 break;
+        }
+
+        if (GameStatus.currentCombo > 0)
+        {
+            _combo.PopUp(GameStatus.currentCombo.ToString());
         }
     }
 }
